@@ -161,6 +161,8 @@ WakaAppGUI o-- Label : contains
 WakaAppGUI o-- Text : contains
 @enduml
 ```
+
+```
 full_app_package/
 ├── full_auto_manyoshu.py      # 万葉集取得 → waka_manyoshu.csv
 ├── aozora_auto_tanka.py       # 青空文庫取得 → waka_aozora.csv
@@ -170,3 +172,4 @@ full_app_package/
 ├── report.html                # HTMLレポート（構成＆スクショ入り）
 ├── requirements.txt           # 必要パッケージ一覧
 └── README.md                  # 実行手順
+```
