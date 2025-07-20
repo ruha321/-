@@ -66,7 +66,8 @@ GUI案：全文検索、季語から検索、ランダム俳句表示
 | 提出ファイル | コアダンプ（.sql）、レポート（HTML） |
 | 出典 | 国文学研究資料館、青空文庫 |
 - 提出ファイル構成例
-    
+
+```
     waka_app/
     ├── app_gui.py          # GUIデスクトップアプリ（Tkinter）
     ├── import_waka.py      # データベース初期化スクリプト
@@ -74,6 +75,7 @@ GUI案：全文検索、季語から検索、ランダム俳句表示
     ├── waka_dump.sql       # PostgreSQLダンプファイル
     ├── report.html         # 提出用HTMLレポート
     ├── [README.md](http://readme.md/)           # 実行手順
+```
     
 
 ```mermaid
