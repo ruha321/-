@@ -116,46 +116,49 @@ erDiagram
 ```plantuml
 @startuml
 class WakaImporter {
-    +run(): void
-    -fetch_zip(): ZipFile
-    -extract_poems(z: ZipFile): List[String]
-    -to_dataframe(poems: List[String]): DataFrame
-    -save_csv(path: String): void
+    +run_manyoshu(): List[String]
+    +run_aozora(): List[String]
+}
+
+class WakaMerger {
+    +merge(csv1, csv2): DataFrame
 }
 
 class DBInitializer {
-    +import_csv(path: String): void
-    -connect_db(): Connection
-    -execute_insert(waka: Waka): void
+    +create_table(): void
+    +import_dataframe(df): void
+    +count(): int
 }
 
 class WakaAppGUI {
     +main(): void
     -setup_gui(): void
-    -search_waka(keyword: String): List[Waka]
-    -random_waka(): Waka
-    -on_import_button(): void
-    -display_results(wakas: List[Waka]): void
-    -connect_db(): Connection
+    -initialize(): void
+    -run_initialization(): void
+    -search_waka(): void
+    -random_show(): void
+    -display_results(): void
+
+    -- UI部品 --
+    -entry: Entry
+    -btn_search: Button
+    -btn_random: Button
+    -btn_init: Button
+    -prog: Progressbar
+    -label: Label
+    -text_box: Text
 }
 
-class Waka {
-    +id: int
-    +text: str
-    +kana: str
-    +romaji: str
-    +author: str
-    +era: str
-    +collection: str
-    +season: str
-    +theme: str
-    +notes: str
-}
-
-WakaImporter --> Waka : creates
-DBInitializer --> Waka : inserts
+WakaImporter --> WakaMerger : provides
+WakaMerger --> DBInitializer : gives DataFrame
+WakaAppGUI --> WakaImporter : uses
+WakaAppGUI --> WakaMerger : uses
 WakaAppGUI --> DBInitializer : uses
-WakaAppGUI --> Waka : displays
+WakaAppGUI o-- Progressbar : contains
+WakaAppGUI o-- Entry : contains
+WakaAppGUI o-- Button : contains
+WakaAppGUI o-- Label : contains
+WakaAppGUI o-- Text : contains
 @enduml
 ```
 full_app_package/
