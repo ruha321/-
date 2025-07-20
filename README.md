@@ -113,53 +113,51 @@ erDiagram
     );
     ```
 
-```plantuml
-@startuml
-class WakaImporter {
-    +run_manyoshu(): List[String]
-    +run_aozora(): List[String]
-}
+```mermaid
+classDiagram
+  class WakaImporter {
+    +run_manyoshu() List~String~
+    +run_aozora() List~String~
+  }
 
-class WakaMerger {
-    +merge(csv1, csv2): DataFrame
-}
+  class WakaMerger {
+    +merge(csv1, csv2) DataFrame
+  }
 
-class DBInitializer {
-    +create_table(): void
-    +import_dataframe(df): void
-    +count(): int
-}
+  class DBInitializer {
+    +create_table()
+    +import_dataframe(df)
+    +count() int
+  }
 
-class WakaAppGUI {
-    +main(): void
-    -setup_gui(): void
-    -initialize(): void
-    -run_initialization(): void
-    -search_waka(): void
-    -random_show(): void
-    -display_results(): void
+  class WakaAppGUI {
+    +main()
+    -setup_gui()
+    -initialize()
+    -run_initialization()
+    -search_waka()
+    -random_show()
+    -display_results()
+    --
+    -entry : Entry
+    -btn_search : Button
+    -btn_random : Button
+    -btn_init : Button
+    -prog : Progressbar
+    -label : Label
+    -text_box : Text
+  }
 
-    -- UI部品 --
-    -entry: Entry
-    -btn_search: Button
-    -btn_random: Button
-    -btn_init: Button
-    -prog: Progressbar
-    -label: Label
-    -text_box: Text
-}
-
-WakaImporter --> WakaMerger : provides
-WakaMerger --> DBInitializer : gives DataFrame
-WakaAppGUI --> WakaImporter : uses
-WakaAppGUI --> WakaMerger : uses
-WakaAppGUI --> DBInitializer : uses
-WakaAppGUI o-- Progressbar : contains
-WakaAppGUI o-- Entry : contains
-WakaAppGUI o-- Button : contains
-WakaAppGUI o-- Label : contains
-WakaAppGUI o-- Text : contains
-@enduml
+  WakaImporter --> WakaMerger : provides
+  WakaMerger --> DBInitializer : gives DataFrame
+  WakaAppGUI --> WakaImporter : uses
+  WakaAppGUI --> WakaMerger : uses
+  WakaAppGUI --> DBInitializer : uses
+  WakaAppGUI o-- Progressbar
+  WakaAppGUI o-- Entry
+  WakaAppGUI o-- Button
+  WakaAppGUI o-- Label
+  WakaAppGUI o-- Text
 ```
 
 ```
