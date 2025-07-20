@@ -171,6 +171,9 @@ full_app_package/
 ├── requirements.txt           # 必要パッケージ一覧
 └── README.md                  # 実行手順
 ```
+
+```bash
 git clone https://github.com/borh/aozora-corpus-generator.git
 cd aozora-corpus-generator
 pip install -e .
+```
