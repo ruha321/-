@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>和歌アーカイブアプリ報告書</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; max-width: 800px; }
+    h1, h2, h3 { color: #336; }
+    pre { background: #f4f4f4; padding: 1rem; overflow-x: auto; }
+    .section { margin-bottom: 2rem; }
+    img.screenshot { max-width: 100%; border: 1px solid #ccc; margin: 0.5rem 0; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+  </style>
+</head>
+<body>
+
+  <h1>和歌アーカイブアプリ報告書</h1>
+
+  <div class="section">
+    <h2>1. 概要</h2>
+    <p>本アプリは、<strong>万葉集の約4,500首</strong>と青空文庫から取得した**近代短歌**を含む和歌を自動収集し、<strong>統合CSV → PostgreSQL データベース → 検索・閲覧GUI</strong>までを一括処理するローカルデスクトップアプリケーションです。</p>
+  </div>
+
+  <div class="section">
+    <h2>2. 使用技術</h2>
+    <ul>
+      <li><strong>Python</strong>：データ取得・統合・DB投入スクリプト</li>
+      <li><strong>requests, zipfile, pandas, aozora-corpus-generator</strong></li>
+      <li><strong>PostgreSQL</strong>：1万件以上の和歌データ保存</li>
+      <li><strong>Tkinter</strong>：GUIアプリ（初期化・検索・ランダム表示）</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>3. スクリプト構成</h2>
+    <table>
+      <tr><th>ファイル名</th><th>機能</th></tr>
+      <tr><td><code>full_auto_waka.py</code></td><td>万葉集＋青空文庫短歌を取得し、<code>waka.csv</code>を生成</td></tr>
+      <tr><td><code>import_and_gui_with_progress.py</code></td><td>CSVからDB投入、GUI操作／進捗表示</td></tr>
+      <tr><td><code>waka_dump.sql</code></td><td>PostgreSQLのデータベースダンプ</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>4. GUI操作画面</h2>
+    <p>データベース初期化から検索までの流れ：</p>
+    <img src="screenshot_init.png" alt="初期化中" class="screenshot" />
+    <p><em>図1. 初期化ボタンの実行＋進捗バー表示</em></p>
+    <img src="screenshot_search.png" alt="検索結果" class="screenshot" />
+    <p><em>図2. 「春」で検索し、結果を表示</em></p>
+  </div>
+
+  <div class="section">
+    <h2>5. データ取得〜DB投入の流れ</h2>
+    <pre>
+// full_auto_waka.py
+df_manyo = fetch_manyoshu()
+df_aozora = fetch_aozora()
+df = concat(...).drop_duplicates()
+df.to_csv('waka.csv')
+
+// GUI
+initialize():
+  subprocess 呼び出し → full_auto_waka.py → waka.csv生成
+  import_csv_to_db('waka.csv') → DB登録
+</pre>
+  </div>
+
+  <div class="section">
+    <h2>6. 今後の改善点</h2>
+    <ul>
+      <li>PostgreSQL の全文検索インデックス（GIN）を追加して高速検索対応</li>
+      <li><code>era</code>や<code>season</code>情報の自動補完機能</li>
+      <li>エラーハンドリング強化と進捗ログの詳細化</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>7. 実行手順</h2>
+    <ol>
+      <li>必要パッケージのインストール：<code>pip install -r requirements.txt</code></li>
+      <li>GUI起動：<code>python import_and_gui_with_progress.py</code></li>
+      <li>「DB初期化」ボタンをクリック → 約数分で処理完了</li>
+      <li>検索／ランダム表示が可能に</li>
+      <li>提出用にダンプ生成：<code>pg_dump waka_db > waka_dump.sql</code></li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>8. 出典・ライセンス</h2>
+    <ul>
+      <li>万葉集テキスト：国文学研究資料館（CODH）提供（<code>BOOK_ID=200015542</code>）</li>
+      <li>近代短歌：青空文庫（aozora-corpus-generator via GitHub）</li>
+      <li>ライブラリ：pandas, requests, psycopg2‑binary, aozora‑corpus‑generator</li>
+    </ul>
+  </div>
+
+  <hr/>
+  <p style="text-align:center; font-size:0.9em;">© 2025 作成者名・提出日：2025年7月21日</p>
+
+</body>
+</html>
