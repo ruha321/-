@@ -112,3 +112,49 @@ erDiagram
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     ```
+
+```plantuml
+@startuml
+class WakaImporter {
+    +run(): void
+    -fetch_zip(): ZipFile
+    -extract_poems(z: ZipFile): List[String]
+    -to_dataframe(poems: List[String]): DataFrame
+    -save_csv(path: String): void
+}
+
+class DBInitializer {
+    +import_csv(path: String): void
+    -connect_db(): Connection
+    -execute_insert(waka: Waka): void
+}
+
+class WakaAppGUI {
+    +main(): void
+    -setup_gui(): void
+    -search_waka(keyword: String): List[Waka]
+    -random_waka(): Waka
+    -on_import_button(): void
+    -display_results(wakas: List[Waka]): void
+    -connect_db(): Connection
+}
+
+class Waka {
+    +id: int
+    +text: str
+    +kana: str
+    +romaji: str
+    +author: str
+    +era: str
+    +collection: str
+    +season: str
+    +theme: str
+    +notes: str
+}
+
+WakaImporter --> Waka : creates
+DBInitializer --> Waka : inserts
+WakaAppGUI --> DBInitializer : uses
+WakaAppGUI --> Waka : displays
+@enduml
+```
