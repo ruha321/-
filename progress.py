@@ -4,6 +4,7 @@ import pandas as pd
 import psycopg2
 import subprocess
 import threading
+from import_and_gui import import_csv_to_db, count_waka, search_waka, random_show
 
 DB_PARAMS = dict(dbname='waka_db', user='postgres', password='yourpass')
 
